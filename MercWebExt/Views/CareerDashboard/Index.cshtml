@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MercWebExt.Models.DataBase.Career>
+
+@{
+    ViewBag.Title = "Career List";
+    Layout = "_Layout";
+}
+
+<div class="container">
+<h2>Career List</h2>
+<a asp-action="Create" class="btn btn-success">Create New Job</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Job Description</th>
+            <th>Date Closing</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var career in Model)
+        {
+            <tr>
+                <td>@career.JobTitle</td>
+                <td>@career.Company</td>
+                <td>@career.JobDescription</td>
+                <td>@career.DateClosing?.ToShortDateString() ?? "N/A"</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@career.Cid" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@career.Cid" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+</div>
+

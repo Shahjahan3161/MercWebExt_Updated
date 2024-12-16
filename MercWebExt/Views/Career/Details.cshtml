@@ -1,0 +1,134 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Globalization;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model MercWebExt.Models.ViewModels.ViewApplication
+
+@{
+    ViewData["Title"] = "Career | Details";
+    Layout = "_Layout_Public";
+}
+
+<section id="Career">
+    <div class="container">
+        <div class="row no-gutter text-center">
+            <div class="col-lg-12">
+                <h2>Employment</h2>
+                <p>To ensure we sustain a high level of service to our customers we have the <strong>right people </strong>doing the <strong>right job</strong></p>
+                <span class="title-separator"></span>
+            </div>
+        </div>
+        <div class="row no-gutter text-center">
+        <form asp-action="ApplyJob" asp-controller="Career" enctype="multipart/form-data">
+            <h4>Detail Information</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt> Job Tittle </dt>
+                <dd class="text-left">
+                    @Html.DisplayFor(model => model.Career.JobTitle)
+                </dd>
+                <dt> Company </dt>
+                <dd class="text-left">
+                    @Html.DisplayFor(model => model.Career.Company)
+                </dd>
+                <dt> Job Description </dt>
+                <dd class="text-left">
+                    @Html.Raw(Html.ValueFor(model => model.Career.JobDescription))
+                </dd>
+                @if (HttpContextAccessor.HttpContext.User.IsInRole("Job Admin"))
+                {
+                    <dt>Is Displayed ?</dt>
+                    <dd class="checkboxes text-left">
+                        <input readonly type="checkbox" id="display" @if (Model.Career.IsDisplayed.Equals(true)) { @Html.Raw("Checked") }>
+                        <label readonly for="display"><span><span></span></span></label>
+                    </dd>
+                }
+                    <dt>Closing Date</dt>
+                    <dd class="text-left">
+                        @{
+                            var career = Model?.Career;
+                            if (career?.IsNonExpired == true)
+                            {
+                                @Html.Raw("Available Now")
+                                ;
+                            }
+                            else
+                            {
+                                var closingDate = career?.DateClosing;
+                                if (closingDate.HasValue)
+                                {
+                                    @closingDate.Value.ToString("dd/MMM/yyyy")
+                                }
+                                else
+                                {
+                                    @Html.Raw("No closing date available")
+                                }
+                            }
+                        }
+                    </dd>
+
+            </dl>
+            @if (HttpContextAccessor.HttpContext.User.IsInRole("Job Admin"))
+            {
+                <a asp-action="Edit" asp-route-id=@Model.Career.Cid class="btn btn-default">Edit</a>
+                @Html.Raw("|")
+            }
+            <hr />
+            <h4>Application Form</h4>
+            <hr />
+            <input type="hidden" asp-for="JobTitle" value="@Model.JobTitle" />
+            <dl class="dl-horizontal">
+                <dt> First Name </dt>
+                <dd class="text-left">
+                    <input type="text" asp-for="FirstName" class="form-control" placeholder="First Name" required onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" />
+                </dd>
+                <dt> Last Name </dt>
+                <dd class="text-left">
+                    <input type="text" asp-for="LastName" class="form-control" placeholder="Last Name" required onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" />
+                </dd>
+                <dt> Contact Number </dt>
+                <dd class="text-left">
+                    <input type="text" asp-for="ContactNumber" class="form-control" placeholder="Numbers Only" required onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+                </dd>
+                <dt> Email Address </dt>
+                <dd class="text-left">
+                    <input type="email" asp-for="EmailAdd" class="form-control" placeholder="Email Address" required />
+                </dd>
+                <dt> Available Date </dt>
+                <dd class="text-left">
+                    <input asp-for="AvailableDate" id="dateSel" type="hidden" />
+                    <input id="datePicker" type="text" class="form-control" OnChange="sendForm(this.value);" placeholder="dd/mm/yyyy" />
+                </dd>
+                <dt> Your Resume  </dt>
+                <dd class="text-left">
+                    <input type="file" asp-for="Resume" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt" class="form-control" />
+                    <label for="Resume">Only .xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt accepted</label>
+                </dd>
+            </dl>
+
+            <hr />
+            <a asp-action="Index" class="btn btn-default">Back to List</a>  &nbsp;&nbsp;&nbsp;            
+            <input type="submit" value="Apply" class="btn btn-default" />
+        </form>
+        </div>
+    </div>
+</section>
+
+<!-- page script -->
+<!-- bootstrap datepicker -->
+<script src="~/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
+<script>
+    //Date picker
+    $('#datePicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy'
+    });
+
+    function sendForm(date) {
+        //MM dd yyyy
+        var newDate = new Date(date.split('/')[1] + " " + date.split('/')[0] + " " + date.split('/')[2]);
+        document.getElementById("dateSel").value = newDate.toDateString();
+    };
+</script>

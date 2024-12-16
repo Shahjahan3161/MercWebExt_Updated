@@ -1,0 +1,69 @@
+﻿@model MercWebExt.Models.DataBase.Settings
+
+@{
+    ViewData["Title"] = "Create Settings";
+    Layout = "_Layout";
+}
+
+<h1>Create Settings</h1>
+
+<div class="container">
+    <form asp-action="Create" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FacebookLink" class="control-label"></label>
+                    <input asp-for="FacebookLink" class="form-control" />
+                    <span asp-validation-for="FacebookLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TwitterLink" class="control-label"></label>
+                    <input asp-for="TwitterLink" class="form-control" />
+                    <span asp-validation-for="TwitterLink" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LogoImage" class="control-label">Logo Image</label>
+                    <input asp-for="LogoImage" type="file" class="form-control" />
+                    <span asp-validation-for="LogoImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BackgroundImage" class="control-label">Background Image</label>
+                    <input asp-for="BackgroundImage" class="form-control" type="file" />
+                    <span asp-validation-for="BackgroundImage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FrontAdImage" class="control-label">Front Ad Image (GIF)</label>
+                    <input asp-for="FrontAdImage" class="form-control" type="file" />
+                    <span asp-validation-for="FrontAdImage" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <!-- You can add additional content here if needed -->
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

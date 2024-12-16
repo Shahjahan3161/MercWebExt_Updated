@@ -1,0 +1,54 @@
+﻿@model MercWebExt.Models.DataBase.Certified
+
+@{
+    ViewData["Title"] = "Edit Certified";
+    Layout = "_Layout";
+}
+
+<h1>Edit Certified</h1>
+<div class="container"><h4>Certified</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                    <textarea asp-for="Description" class="form-control" style="width: 100%; height: 150px;"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Images" class="control-label"></label>
+                <input asp-for="Images" class="form-control" type="file" multiple />
+                <span asp-validation-for="Images" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @if (Model.ImagePaths != null)
+                {
+                    var imagePaths = Model.ImagePaths.Split(',');
+                    foreach (var imagePath in imagePaths)
+                    {
+                        <div>
+                            <img src="@imagePath" class="img-thumbnail" style="max-height: 200px;" />
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

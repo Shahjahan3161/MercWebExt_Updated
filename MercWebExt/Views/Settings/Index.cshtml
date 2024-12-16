@@ -1,0 +1,66 @@
+﻿@model IEnumerable<MercWebExt.Models.DataBase.Settings>
+
+@{
+    ViewData["Title"] = "Settings";
+    Layout = "_Layout";
+}
+<div class="container">
+    <h1>Settings</h1>
+
+    @if (!Model.Any())
+    {
+        <p>
+            <a asp-action="Create" class="btn btn-success">Create New</a>
+        </p>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().PhoneNumber)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Email)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Address)</th>
+                <th>@Html.DisplayNameFor(model => model.First().FacebookLink)</th>
+                <th>@Html.DisplayNameFor(model => model.First().TwitterLink)</th>
+                <th>Logo Image</th>
+                <th>Background Image</th>
+                <th>GIF Image</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FacebookLink)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TwitterLink)</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.LogoImagePath))
+                        {
+                            <img src="@item.LogoImagePath" alt="Logo Image" width="100" height="100" />
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.BackgroundImagePath))
+                        {
+                            <img src="@item.BackgroundImagePath" alt="Background Image" width="100" height="100" />
+                        }
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.FrontAdImagePath))
+                        {
+                            <img src="@item.FrontAdImagePath" alt="GIF Image" width="100" height="100" />
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

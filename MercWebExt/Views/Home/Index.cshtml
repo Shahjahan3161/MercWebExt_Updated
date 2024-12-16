@@ -1,0 +1,481 @@
+﻿@model MercWebExt.Models.ViewModels.ViewContact
+@{
+    ViewBag.Title = "Home";
+    var aboutUs = ViewBag.AboutUs;
+    var refrigerated = ViewBag.Refrigerated;
+    
+    var certified = ViewBag.Certifieds;
+    var settings = ViewBag.Settings;
+
+    Random random = new Random();
+
+    int antiSpamNumber1 = random.Next(1, 9);
+    int antiSpamNumber2 = random.Next(1, 9);
+    int antiSpamNumber3 = antiSpamNumber1 + antiSpamNumber2;
+}
+
+
+@{
+    var backgroundImagePath = settings != null && !string.IsNullOrEmpty(settings.BackgroundImagePath)
+        ? Url.Content(settings.BackgroundImagePath)
+        : "../images/intro.jpg"; 
+}
+
+<div id="#top">
+    <section id="intro" class="separator bottom" data-speed="2" data-type="background" style="background: url('@backgroundImagePath') 50% 0 fixed; background-position: 50% -5px;">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12" style="padding:0;z-index:1;">
+                    @if (settings != null && !string.IsNullOrEmpty(settings.LogoImagePath))
+                    {
+                        <img style="width:25%;padding:0;" src="@Url.Content(settings.LogoImagePath)" alt="Logo" />
+                    }
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0; z-index: 3; margin-top: -2%;">
+                    <a class="button brown rounded" style="font-weight: bold;" href="/Home/Index/#contact" OnClick="MakeEnqurie();">Please enquire for a quote</a>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0; margin-top: 6%; z-index: 1;">
+                    @if (settings != null && !string.IsNullOrEmpty(settings.FrontAdImagePath))
+                    {
+                        <a href="mailto:MMerc@mercorella.com.au;">
+                            <img style="width:100%;padding:0;" src="@Url.Content(settings.FrontAdImagePath)" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="mailto:MMerc@mercorella.com.au;">
+                            <img style="width:100%;padding:0;" src="~/images/frontAdsSmall.gif" />
+                        </a>
+                    }
+                </div>
+@* 
+                <div class="col-lg-12 col-md-12 col-sm-12" style="padding: 0; margin-top: 6%; z-index: 1;">
+                    <a href="mailto:MMerc@mercorella.com.au;">
+                        <img style="width:100%;padding:0;" src="~/images/frontAdsSmall.gif" />
+                    </a>
+                </div> *@
+            </div>
+        </div>
+    </section>
+</div>
+
+<section id="intro-features" class="direction-arrow">
+    <div class="container">
+        <div class="row no-gutter text-center">
+            <div class="intro-features-wrap">
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <figure class="min-feature">
+                            <div class="image">
+                                <a href="#distribution"><img src="@Url.Content(category.ImagePath)" class="img-responsive" alt="Featured Image"></a>
+                            </div>
+                            @* <img src="~/images/min-feature-shadow.png" class="shadow img-responsive" alt="Shadow"> *@
+                            <div class="text">
+                                <h4>@category.CategoryName</h4>
+                            </div>
+                        </figure>
+                    </div>
+                }
+                <div class="clearfix"></div>
+            </div>
+
+        </div>
+
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h6>About us</h6>
+                <h1>@aboutUs?.Title</h1>
+                <span class="title-separator"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-push-1 text-center">
+                <p>
+                    @aboutUs?.Description
+                </p>
+                <span class="title-separator bottom"></span>
+                <a class="button brown rounded" href="/Home/Index/#coolroom">More Info</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="freshproduce" class="separator top">
+    <span class="arrow-separator"></span>
+    <div class="container-fluid">
+        <div class="row no-padding">
+            <div class="col-lg-12">
+                <div id="freshproduce-roll" class="owl-carousel">
+                    @foreach (var category in ViewBag.Categories2)
+                    {
+                        <figure>
+                            <div class="overlay">
+                                <div class="content">
+                                    <a class="category">@category.CategoryName</a>
+                                    <h3><a class="white">@category.CategoryName</a></h3>
+                                </div>
+                            </div>
+                            <img class="img-responsive" src="@Url.Content(category.ImagePath)" alt="@category.CategoryName">
+                        </figure>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="coolroom" class="separator top">
+    <div class="container">
+        <div class="row">
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <h6>@ViewBag.Refrigerated?.Title</h6>
+                    <span class="title-separator"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 col-lg-push-1 text-center">
+                    <p>
+                        @ViewBag.Refrigerated?.Description
+                    </p>
+                    <span class="title-separator bottom"></span>
+                    <a class="button brown rounded" href="/Home/Index/#coolroom">More Info</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="row auto-clear">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="fa fa-truck"></i> Cold storage, Distribution & Consolidation</h4>
+                    <p>
+                        Our Quality Assured 14,800 m<sup>2</sup> multi-zoned temperature-managed
+                        (3-12<sup>c</sup> to ambient) warehousing/distribution and consolidation centre
+                        proudly handles the distribution of fresh Fruit and Vegetables for more than 60 Supermarkets
+                        throughout South Australia and Northern Territory, with our reach extending to
+                        Mildura and Broken Hill.<br/>
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="fa fa-share-alt"></i> Supply Chain Capabilities</h4>
+                    <p>
+                        • Pre-chilling/Controlled temperature warehousing <br />
+                        • Pick & Pack/Freight forwarding/ Flow-through/Cross docking <br />
+                        • Loading/Unloading (bonded) <br />
+                        • Distribution/Transportation/Delivery (Supplier/DC/Store) <br />
+                        • Inventory control/management <br />
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="fa fa-glass"></i> Wine & Wood</h4>
+                    <p>
+                        Our fully insulated facility offers discerning wine makers/sellers a holistic wine storage and distribution solution. <br />
+                        • Loading/Unloading <br />
+                        • Storage/Picking/Product handling <br />
+                        • Product and Shipping labelling <br />
+                        • Inventory management <br />
+                        • Distribution/Transportation (Domestic/Export) <br />
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="icofont-carrot"></i> The Carrot Company</h4>
+                    <p>
+                        Our name says it all! We are experts in the carrot industry –
+                        everything we do ensures carrot freshness, quality and great taste.
+                        <br /><br />
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="icofont-fruits"></i> Golden Grace Produce</h4>
+                    <p>
+                        Proud to have been packing fresh produce for Supermarkets for over four decades
+                        and providing customers with innovative and specialised packing of fresh produce.
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="fbox">
+                    <h4><i class="icofont-farmer"></i> Mercorella Organics</h4>
+                    <p>
+                        Since commencing operations in 2004, we’ve doubled the range of organic produce sourced
+                        from both local and interstate suppliers.
+                        <br /><br />
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <!--<a class="button brown rounded" href="/Home/Index/#contact" OnClick="MakeEnqurie();">Enquire</a>-->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="distribution" class="separator top" data-speed="2" data-type="background">
+    <span class="arrow-separator"></span>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div id="distribution-roll" class="owl-carousel">
+                    @foreach (var category in ViewBag.Categories3)
+                    {
+                        <figure>
+                            <img class="img-responsive" src="@Url.Content(category.ImagePath)" alt="@category.CategoryName">
+                            <h4><a href="#">@category.CategoryName</a></h4>
+                        </figure>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="organic-features" class="separator top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h6>Quality products</h6>
+                <h2>@certified?.Title</h2>
+                <span class="title-separator left"></span>
+                <p>
+                    @certified?.Description
+                </p>
+                <span class="title-separator bottom left"></span>
+                <div class="certificate">
+                    @if (certified?.ImagePaths != null)
+                    {
+                        var imagePaths = certified.ImagePaths.Split(',');
+                        foreach (var imagePath in imagePaths)
+                        {
+                            <img src="@imagePath" alt="Certificate" class="img-thumbnail" style="max-width: 160px; max-height: 90px;" />
+                        }
+                    }
+                </div>
+            </div>
+            <div id="counter-bg" class="col-lg-6 text-center clearfix">
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="counter-box">
+                        <p class="lead">Established</p>
+                        <div class="number">
+                            <img class="pull-left" src="~/images/laurel-wreath-left.png" alt="Laurel Wreath" width="35" height="73">
+                            <h4 class="timer pull-left">1967</h4>
+                            <img class="pull-left" src="~/images/laurel-wreath-right.png" alt="Laurel Wreath" width="35" height="73">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="counter-box">
+                        <p class="lead">Years Experience</p>
+                        <div class="number">
+                            <img class="pull-left" src="~/images/laurel-wreath-left.png" alt="Laurel Wreath" width="35" height="73">
+                            <h4 class="timer pull-left">@(DateTime.Now.Year-1967)</h4>
+                            <img class="pull-left" src="~/images/laurel-wreath-right.png" alt="Laurel Wreath" width="35" height="73">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contact-info" class="separator top">
+    <span class="arrow-separator"></span>
+    <div class="container">
+        <div class="col-md-12 map-info">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="iconbox">
+                        <i class="fa fa-envelope"></i>
+                        <p>Email Address</p>
+                        <h5>@settings?.Email</h5>
+                    </div>
+                </div>
+                <div class="col-md-4 side-borders">
+                    <div class="iconbox">
+                        <i class="fa fa-phone"></i>
+                        <p>Phone Number</p>
+                        <h5>@settings?.PhoneNumber</h5>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="iconbox">
+                        <i class="fa fa-map-marker"></i>
+                        <p>Location Address</p>
+                        <h5>@settings?.Address</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="map">
+        <div id="map" style="width:100%;height:100%">
+            <img src="~/images/mercmap.png" />
+        </div>
+    </div>
+
+</section>
+
+
+<section id="contact" class="separator top">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h6>Stay in touch</h6>
+                <h2>We are interested in hearing from you</h2>
+                <span class="title-separator"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="contactform form">
+                    <form asp-action="SendEmailFromIndex" asp-controller="Home" method="POST" id="sendEmailForm">
+                        <div class="row">
+                            <div asp-validation-summary="ModelOnly" class="text-danger" />
+                            <div class="col-md-12" id="hiddenBox">
+                                <input id="emailSubject" asp-for="Subject" value="Regular" />
+                                <input id="isValid" asp-for="IsValid" value="UnValid" />
+                                <input type="text" value="@antiSpamNumber1" />
+                                <input type="text" value="@antiSpamNumber2" />
+                                <input type="text" id="antiSpamA" value="@antiSpamNumber3" />
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SenderName">Your Name</label>
+                                <div class="form-group">
+                                    <input id="emailFormName" asp-for="SenderName" type="text" class="form-control" placeholder="Your Name" autocomplete="off" OnChange="FilledCheck();" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="SenderEmail">Your Email</label>
+                                <div class="form-group">
+                                    <input id="emailFormEmail" asp-for="SenderEmail" class="form-control" type="text" placeholder="Your Email" autocomplete="off" OnChange="FilledCheck();" required />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="Phone">Contact Number</label>
+                                <div class="form-group">
+                                    <input id="emailFormNumber" asp-for="Phone" class="form-control" type="text" placeholder="Number Only" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" OnChange="FilledCheck();" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label>Anti Spam Question : @antiSpamNumber1 + @antiSpamNumber2 = ?</label>
+                                <div class="form-group">
+                                    <input class="form-control" type="text" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" Onchange="CheckAnti(this.value);" placeholder="Number Only" autocomplete="off"/>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="Message">Your Message</label>
+                                <div class="form-group">
+                                    <textarea asp-for="Message" class="form-control" cols="40" rows="3" placeholder="When you enter all the information correctly,'Send' button will be apeared."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div id="sendBtnDiv" class="text-center">
+                                    <button id="sendBtn" class="button green rounded" type="submit">Send Message</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script >
+
+//Page Start
+$(function ()
+{
+    $("#sendBtnDiv").fadeOut();
+    $("#hiddenBox").fadeOut();
+}); 
+
+function FilledCheck()
+{
+    var isValid = document.getElementById('isValid').value;
+
+    if (document.getElementById('emailFormName').value == "" || 
+        document.getElementById('emailFormEmail').value == "" ||
+        document.getElementById('emailFormNumber').value == "")
+    {
+        $("#sendBtnDiv").fadeOut();
+    }
+    else
+    {
+        if (isValid == "Valid")
+        {
+            $("#sendBtnDiv").fadeIn();
+        }
+    }
+};
+
+function MakeEnqurie()
+{
+    document.getElementById('emailSubject').value = "Enquire";
+};
+
+function CheckAnti(answer)
+{
+    var rightAns = document.getElementById('antiSpamA').value;
+
+    console.log(answer + ", " + rightAns)
+
+    if (answer == rightAns)
+    {
+        swal({
+                title: "Correct !",
+                text: "",
+                icon: "success",
+        });
+
+        document.getElementById('isValid').value = "Valid";
+        $("#sendBtnDiv").fadeIn();
+        FilledCheck();
+    }
+    else
+    {
+        swal({
+                title: "Please check the question.",
+                text: "",
+                icon: "warning",
+        });
+
+        document.getElementById('isValid').value = "UnValid";
+        $("#sendBtnDiv").fadeOut();
+    }
+};
+
+</script>
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <script>
+    $(function () {
+
+        swal({
+                title: "@ViewBag.Message",
+                text: "",
+                icon: "success",
+            });
+
+        location.href="/Home/Index";
+     });
+    </script>
+}

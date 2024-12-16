@@ -1,0 +1,19 @@
+﻿==Merc Ext Public ==
+Scaffold-DbContext "Server=sqlsvr9.apexhost.net.au;Database=mercorel_mercwebpublic;user id=mercorel_mercwebadmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Induction -Tables [dbo].[Induction.Induction], [dbo].[Induction.Question] -ContextDir "Data/Context" -Context InductionContext -f
+
+Scaffold-DbContext "Server=sqlsvr9.apexhost.net.au;Database=mercorel_mercwebpublic;user id=mercorel_mercwebadmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Career -Tables [dbo].[Career] -ContextDir "Data/Context" -Context CareerContext -f
+
+Scaffold-DbContext "Server=MERCSEC1;Database=MercWebExt;user id=MercWebAdmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Policies -Tables [dbo].[Policies] -ContextDir "Data/Context" -Context PoliciesContext -f
+Scaffold-DbContext "Server=MERCSEC1;Database=MercWebExt;user id=MercWebAdmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Induction -Tables [dbo].[Induction.Induction], [dbo].[Induction.Question] -ContextDir "Data/Context" -Context InductionContext -f
+
+optionsBuilder.UseSqlServer("Server=MERCSEC1;Database=MercWebExt;user id=MercWebAdmin;pwd=Merc@235;");
+//optionsBuilder.UseSqlServer("Server=sqlsvr9.apexhost.net.au;Database=mercorel_mercwebpublic;user id=mercorel_mercwebadmin;pwd=Merc@235;");
+
+
+==Merc Ext Context String== 
+Scaffold-DbContext "Server=mssql.mercorella.com.au;Database=MercWebExt;user id=MercWebAdmin;pwd=vP_6flOk9ij8Dwkn;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/DataBase/ -Tables [dbo].[Career], [dbo].[Policies], [dbo].[Users.Role], [dbo].[Users.User], [dbo].[Induction.Induction], [dbo].[Induction.Question] -ContextDir "Data/Context" -Context DatabaseContext -f
+Scaffold-DbContext "Server=MERCSEC1;Database=MercWebExt;user id=MercWebAdmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/DataBase/ -Tables [dbo].[Career], [dbo].[Policies], [dbo].[Users.Role], [dbo].[Users.User], [dbo].[Induction.Induction], [dbo].[Induction.Question] -ContextDir "Data/Context" -Context DatabaseContext -f
+Scaffold-DbContext "Server=sqlsvr9.apexhost.net.au;Database=mercorel_mercwebpublic;user id=mercorel_mercwebadmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/DataBase/Induction -Tables [dbo].[Career], [dbo].[Policies], [dbo].[Users.Role], [dbo].[Users.User], [dbo].[Induction.Induction], [dbo].[Induction.Question] -ContextDir "Data/Context" -Context DatabaseContext -f
+
+
+Scaffold-DbContext "Server=MERCMYOB1;Database=MercCreditors;user id=MercWebAdmin;pwd=Merc@235;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models/Creditors -Tables [dbo].[EmailGroup], [dbo].[Events], [dbo].[Users], [dbo].[Report], [dbo].[ReportCover], [dbo].[ReportItem], [dbo].[ReportGroup], [dbo].[SupplierModel], [dbo].[Remittance], [dbo].[SystemConfiguration] -ContextDir "Data/Context" -Context CreditorsContext -f

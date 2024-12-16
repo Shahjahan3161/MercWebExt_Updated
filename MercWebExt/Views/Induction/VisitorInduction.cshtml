@@ -1,0 +1,864 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model MercWebExt.Models.ViewModels.ViewInduction
+
+@{
+    ViewBag.Title = "Visitor Induction";
+    Layout = "_Layout_Public";
+}
+
+<section id="Induction">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2>VISITOR / CONTRACTOR QUESTIONNAIRE</h2>
+                <p>
+                    To complete this form, please fill out your details and click the <strong>Complete</strong> button. Select the box that best represents your answer.<br/>
+                    Click on the PDF icon to view the document.<br/>
+                    <br/>
+                </p>
+                <h3>BROWSER PERFORMANCE DISCLAIMER</h3>
+                <p>If you are using Internet Explorer or an out-of-date browser, this induction will <b>NOT</b> work.</p>
+
+            </div>
+        </div>
+        <form>
+            <br />
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="5%" class="text-right">#</th>
+                                <th width="80%">
+                                    Has the Visitor/Contractor been given, shown or described to him/her
+                                </th>
+                                <th width="5%">Yes</th>
+                                <th width="5%">No</th>
+                                <th width="5%">N/A</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.InductionQuestions.Where(w=>w.Category.Equals("Visitor")).ToList())
+                            {
+                                <tr>
+                                    <td class="text-right">
+                                        @item.Qnumber
+                                    </td>
+                                    
+                                        @if(item.IsNotUseFile.Value)
+                                        { 
+                                            <td>@item.Question</td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qat_@item.Qnumber" name="qr_@item.Qnumber" value="Yes" required/><label for="qat_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qaf_@item.Qnumber" name="qr_@item.Qnumber" value="No" /><label for="qaf_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qan_@item.Qnumber" name="qr_@item.Qnumber" value="NA" /><label for="qan_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a data-filename="@item.FileName" data-filepath="@item.FilePath" data-ansid="@item.Qnumber" data-toggle="modal" data-target="#modal-fileview_@item.Qnumber">
+                                                    @item.Question &nbsp;<i class="fa fa-file-pdf-o"></i>
+                                                </a>
+                                            </td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qat_@item.Qnumber" name="qr_@item.Qnumber" value="Yes" required/><label for="qat_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qaf_@item.Qnumber" name="qr_@item.Qnumber" value="No"  /><label for="qaf_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                            <td class="checkboxes">
+                                                <input type="radio" id="qan_@item.Qnumber" name="qr_@item.Qnumber" value="NA"  /><label for="qan_@item.Qnumber">&nbsp;<span><span></span></span></label>
+                                            </td>
+                                        }
+                                    
+                                </tr>
+                            }
+                            <tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3>MAJOR HAZARDS</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="30%">HAZARD</th>
+                                <th width="60%">PRECAUTION</th>
+                                <th width="10%">Understood</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="4" style="vertical-align:middle;">
+                                    Forklift(Predestrian)
+                                </td>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 1).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_1" name="fr_1" value="Completed" required /><label for="ft_1">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 2).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_2" name="fr_2" value="Completed" required /><label for="ft_2">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 3).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_3" name="fr_3" value="Completed" required /><label for="ft_3">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 4).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_4" name="fr_4" value="Completed" required /><label for="ft_4">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4" style="vertical-align:middle;">
+                                    Forklift(Operator)
+                                </td>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 5).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_5" name="fr_5" value="Completed" required /><label for="ft_5">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("ForkLift") && w.Qnumber == 6).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="ft_6" name="fr_6" value="Completed" required /><label for="ft_6">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br/>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="90%">Response</th>
+                                <th width="10%">Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("Response") && w.Qnumber == 1).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="rt_1" name="rr_1" value="Completed" required /><label for="rt_1">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Model.InductionQuestions.Where(w=>w.Category.Equals("Response") && w.Qnumber == 2).First().Question
+                                </td>
+                                <td class="checkboxes">
+                                    <input type="radio" id="rt_2" name="rr_2" value="Completed" required /><label for="rt_2">&nbsp;<span><span></span></span></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Comments :<br/>
+                                    <textarea id="comments" style="width:100%;resize:none;" rows="5"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br/> 
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-4">
+                        <label>First Name</label>
+                        <div class="form-group">
+                            <input id="FirstName" type="text" class="form-control" placeholder="Your First Name" onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Last Name</label>
+                        <div class="form-group">
+                            <input id="LastName" type="text" class="form-control" placeholder="Your Last Name" onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Company</label>
+                        <div class="form-group">
+                            <input id="Company" class="form-control" type="text" placeholder="Your Company" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-4">
+                        <label>Your Email</label>
+                        <div class="form-group">
+                            <input id="DriverEmail" class="form-control" type="email" placeholder="Your Email" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Your Mobile Number</label>
+                        <div class="form-group">
+                            <input id="DriverMobile" class="form-control" type="text" placeholder="Numbers Only" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>High Risk Licence Number</label>
+                        <div class="form-group">
+                            <input id="ForkliftNo" class="form-control" type="text" placeholder="The Number of the High Risk Licence" onKeyup="this.value=this.value.toUpperCase();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <input type="hidden" id="userId" readonly/>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class="button green rounded" id="sendInduction">Complete</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_1">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_1"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_1" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_2">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_2"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_2" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_3">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_3"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_3" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_4">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_4"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_4" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_5">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_5"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_5" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_6">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_6"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_6" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_7">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_7"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_7" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_8">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_8"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_8" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade text-center" id="modal-fileview_9">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="fileTitle_9"></h4>
+        </div>
+        <div class="modal-body">
+            <div class="fadeTable">
+                <embed src="" id="filePath_9" type="application/pdf" width="100%" height="800px" /> 
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('Yes');" style="margin:10px 0;">
+                    Yes
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('No');" style="margin:10px 0;">
+                    No
+                </button>
+                <button type="button" class="btn" data-dismiss="modal" OnClick="CheckAnswer('NA');" style="margin:10px 0;">
+                    N/A
+                </button>
+                &nbsp;
+            </div>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<input type="hidden" id="answerId" />
+<script>
+//Modal comments
+$('#modal-fileview_1').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_1").innerHTML = fileName;
+    document.getElementById("filePath_1").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_2').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_2").innerHTML = fileName;
+    document.getElementById("filePath_2").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_3').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_3").innerHTML = fileName;
+    document.getElementById("filePath_3").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_4').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_4").innerHTML = fileName;
+    document.getElementById("filePath_4").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_5').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_5").innerHTML = fileName;
+    document.getElementById("filePath_5").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_6').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_6").innerHTML = fileName;
+    document.getElementById("filePath_6").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_7').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_7").innerHTML = fileName;
+    document.getElementById("filePath_7").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_8').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_8").innerHTML = fileName;
+    document.getElementById("filePath_8").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+//Modal comments
+$('#modal-fileview_9').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle_9").innerHTML = fileName;
+    document.getElementById("filePath_9").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+$(function () {
+
+    GetUserId();
+
+});
+
+function GetUserId()
+{
+    $.ajax({
+        type: "GET",
+        url: "https://winewood.mercorella.com.au:6550/Users/GetUserId",
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json",
+        success: function (response) {
+            document.getElementById('userId').value = response;
+            
+        }
+    });
+};
+
+function CheckAnswer(answer)
+{
+    var ansId = document.getElementById("answerId").value + "";
+
+    if (answer == 'Yes')
+    {
+        ansId = "qat_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+    else if (answer == 'No')
+    {
+        ansId = "qaf_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+    else if (answer == 'NA')
+    {
+        ansId = "qan_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+
+};
+
+
+
+//Add User to Ingress
+function addUserByExt()
+{
+    GetUserId();
+    var userId = document.getElementById('userId').value;
+    var userFirst = document.getElementById('FirstName').value;
+    var userLast = document.getElementById('LastName').value;
+    var userPhone = document.getElementById('DriverMobile').value;
+    var userEmail = document.getElementById('DriverEmail').value;
+    var userComp = document.getElementById('Company').value;
+
+    var newUser = {"Name":userFirst,"Lastname":userLast,"Phone":userPhone,"Email":userEmail, "Company":userComp, "UserGroup":4, "Userid":userId};
+
+    $.ajax({
+        type: "POST",
+        url: "https://winewood.mercorella.com.au:6550/Users/AddUserByExt",
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json",
+        data:newUser
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "https://winewood.mercorella.com.au:6680/Users/AddUsers?paraString=" + userId + "-" + userFirst + "-" + userLast,
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json"
+    });
+
+};
+
+    $('#sendInduction').on('click', function () {
+
+        document.getElementById("sendInduction").disabled = true;
+
+        // Validate form before submission
+        var isValid = ValidateForm();
+
+        if (isValid) {
+            var lastName = document.getElementById("LastName").value;
+            var firstName = document.getElementById("FirstName").value;
+            var driverEmail = document.getElementById("DriverEmail").value;
+            var driverMobile = document.getElementById("DriverMobile").value;
+            var forkliftNumber = document.getElementById("ForkliftNo").value;
+            var userId = document.getElementById('userId').value;  // Assuming userId is already available
+            var comments = document.getElementById('comments').value;
+            var company = document.getElementById('Company').value;
+            var choices = getChoices();  // Collect answers for validation
+
+            var returnData = {
+                Category: "Visitor",
+                LastName: lastName,
+                FirstName: firstName,
+                DriverEmail: driverEmail,
+                DriverMobile: driverMobile,
+                ForkliftNo: forkliftNumber,
+                Comments: comments,
+                UserId: userId,
+                Company: company,
+                Answers: choices  // Sending answers to backend for validation
+            };
+
+            // Send data to backend for validation and submission
+            $.ajax({
+                type: "POST",
+                url: "/Induction/CheckInductionAnswers",
+                contentType: 'application/json',
+                data: JSON.stringify(returnData),  // Send entire data object
+                success: function (response) {
+                    if (response.isCorrect) {
+                        swal({
+                            title: "Good job!",
+                            text: "You have successfully completed the induction. An email has been sent to " + driverEmail +
+                                "\n Please bring this email and QR pass with you when you are onsite. Thank you",
+                            icon: "success",
+                        }).then((value) => { location.reload(true); });
+                    } else {
+                        swal({
+                            title: "Invalid Answers",
+                            text: "Some of your answers were incorrect. Please review and try again.",
+                            icon: "error",
+                        });
+                    }
+                },
+                error: function (error) {
+                    console.log("Error submitting the form", error);
+                }
+            });
+        } else {
+            swal({
+                title: "Invalid Details",
+                text: "You have entered invalid Personal Details\nPlease check your name and email address again.",
+                icon: "error",
+            });
+        }
+    });
+
+   
+        function getChoices() {
+            var choices = [];
+        debugger
+    @foreach (var item in Model.InductionQuestions.Where(w => w.Category.Equals("Visitor")).ToList())
+    {
+        
+        // Use this Razor syntax to construct JavaScript code correctly
+        var qNumber = @item.Qnumber;
+        var qName = "qr_" + qNumber; // Dynamically construct the name
+        // Add JavaScript to check if radio is checked and get the value
+        @:var selectedAnswer = $("input[name='" + qName + "']:checked").val();
+        @:if (selectedAnswer) {
+        @:choices.push({ QuestionId: @item.Qnumber, Answer: selectedAnswer });
+    }
+            }
+        return choices;
+        }
+
+
+
+function ValidateForm()
+{
+    var returnVal = true;
+
+    //Check Personal Details
+    if( (document.getElementById("LastName").value == "") ||
+        (document.getElementById("FirstName").value == "") ||
+        (document.getElementById("DriverEmail").value == "") )
+    {
+        document.getElementById("LastName").focus();
+        returnVal = false;
+        document.getElementById("sendInduction").disabled = returnVal;
+    }
+
+    return returnVal;
+        
+};
+
+</script>

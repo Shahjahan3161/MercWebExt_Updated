@@ -1,0 +1,30 @@
+﻿@model MercWebExt.Models.DataBase.Career
+
+@{
+    ViewBag.Title = "Delete Career";
+    Layout = "_Layout";
+}
+<div class="container">
+<h2>Delete Career</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Career</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Job Title</dt>
+        <dd>@Model.JobTitle</dd>
+        <dt>Company</dt>
+        <dd>@Model.Company</dd>
+        <dt>Job Description</dt>
+        <dd>@Model.JobDescription</dd>
+    </dl>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Cid" />
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+</div>

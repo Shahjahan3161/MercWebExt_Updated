@@ -1,0 +1,42 @@
+﻿html {
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+h1{
+    width:100%;    
+}
+
+div {
+    text-align:center;
+    padding:0;
+    margin:0;
+    width: 100%;    
+}
+
+table {
+    background: #fff;
+    margin: 1% 1% 1% 1%;
+    border-collapse: collapse;
+    width: auto;
+}
+
+table th {
+    margin:0;
+	font-weight: bold;
+	font-size: 22px;
+    border-bottom: 1px solid #808080;
+}
+
+table td {
+	font-size: 20px;
+    text-align: left;
+    border-bottom: 1px solid #808080;
+    
+}

@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var settings = ViewBag.Settings;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Cold Storage Facility, Refrigerated Storage, Storage, Distibution">
+    <meta name="keywords" content="Cold, Cold Storage, Cold Storage Facility, Refrigerated Storage, Storage, Distibution, Cool rooms, Cold rooms, coles, fresh, product, organic">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Mercorella Group | @ViewBag.Title</title>
+
+    <!-- CSS Loading-->
+    <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/css/icofont.min.css" rel="stylesheet">
+    <link href="~/css/owl.carousel.css" rel="stylesheet">
+    <link href="~/css/style-media.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/style-checkbox.css" rel="stylesheet">
+    <link href="~/dist/summernote-lite.css" rel="stylesheet">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="~/css/buttons.dataTables.css">
+
+    <!-- Icons Loading-->
+    <link rel="apple-touch-icon" sizes="57x57" href="~/images/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="~/images/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="~/images/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="~/images/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="~/images/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="~/images/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="~/images/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="~/images/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="~/images/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="~/images/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/icons/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="~/images/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="~/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/images/favicon.ico" type="image/x-icon">
+    <GLOBALIZATION culture="auto" uiculture="auto" enableClientBasedCulture="true" />
+
+    <style></style>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <header class="nav-down">
+        <nav class="navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="logo">
+                        <!--<a href="/Home/Index/#"><img src="~/images/logo.png" alt="Logo"></a>-->
+                    </div>
+                    <div class="navbar-header">
+                        <a class="mobile-toggle navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <div class="bar-1"></div>
+                            <div class="bar-2"></div>
+                            <div class="bar-3"></div>
+                        </a>
+                        <a class="mobile-logo" href="/Home/Index">Mercorella Group</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-left text-center">
+                            <li><p>@Html.ActionLink("Mercorella Group", "Index", "Home")</p></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right text-center">
+                            <li><a href="/Home/Index/#coolroom">Refrigerated Storage</a></li>
+                            <li>@Html.ActionLink("Career", "Index", "Career")</li>
+                            <li>@Html.ActionLink("Induction", "Induction", "Induction")</li>
+                            <!--<li><a href="https://winewood.mercorella.com.au:6550/Users/ExtInduction">Induction</a></li>-->
+                            <li><a href="/Policy/PolicyList">Company Policies</a></li>
+                            <li><a href="/Home/Index/#contact">Contact Us</a></li>
+                            <li><a href='@Url.Action("LoginUser","Account")'>Log in</a></li>
+                            @if (HttpContextAccessor.HttpContext.User.IsInRole("Job Admin"))
+                            {
+                                <li><a class="button green border light rounded" href="/Career/Index">Admin</a></li>
+                            }
+                        </ul>
+                    </div><!-- /.navbar-collapse -->
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+
+
+    <!-- Srcipts Loading -->
+    <script language="JavaScript" type="text/javascript" src="~/js/jquery-2.2.0.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/bootstrap.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/plugins.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/scripts.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/js/popup.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/dist/js/sweetalert.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/dist/summernote-lite.js"></script>
+    <!-- DataTables -->
+    <script src="~/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="~/bower_components/datatables.net-bs/js/dataTables.bootstrap.js"></script>
+    <!-- Google reCAPTCHA-->
+    <!--<script src="https://www.google.com/recaptcha/api.js"></script>-->
+    
+    <!-- Srcipts Loading -->
+
+
+    <div id="wrapper">
+        @RenderBody()
+    </div>
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-6">
+                    <p class="copyright">&copy; @DateTime.Now.Year Mercorella Group. All rights reserved. @HttpContextAccessor.HttpContext.User.Identity.Name</p>
+                </div>
+                <div class="hidden-xs col-sm-6 col-md-6 text-right">
+                    <ul class="list-unstyled no-list-style list-inline list-socials">
+                        <li><a href="@settings?.FacebookLink"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="@settings?.TwitterLink"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+
+                        <li><a href="/Account/Login"><i class="fa fa-unlock-alt" aria-hidden="true" alt="Login"></i></a></li>
+                        @if (HttpContextAccessor.HttpContext.User.IsInRole("Job Admin"))
+                        {
+                            <li><a href="/Account/Logout" alt="Logout"><i class="fa fa-unlock" aria-hidden="true"></i></a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+﻿@model MercWebExt.Models.DataBase.Career
+
+@{
+    ViewBag.Title = "Edit Career";
+    Layout = "_Layout";
+}
+<div class="container">
+<h2>Edit Career</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Cid" />
+
+    <div class="form-group">
+        <label asp-for="JobTitle"></label>
+        <input asp-for="JobTitle" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Company"></label>
+        <input asp-for="Company" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="JobDescription"></label>
+        <textarea asp-for="JobDescription" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="DateClosing"></label>
+        <input asp-for="DateClosing" class="form-control" />
+    </div>
+    <div class="form-group form-check">
+        <input asp-for="IsNonExpired" class="form-check-input" />
+        <label asp-for="IsNonExpired" class="form-check-label">Is Non Expired</label>
+    </div>
+    <div class="form-group form-check">
+        <input asp-for="IsDisplayed" class="form-check-input" />
+        <label asp-for="IsDisplayed" class="form-check-label">Is Displayed</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+</div>

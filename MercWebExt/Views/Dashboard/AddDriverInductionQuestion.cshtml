@@ -1,0 +1,63 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model MercWebExt.Models.DataBase.InductionQuestion
+
+@{
+    ViewBag.Title = "Add Question";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h2>Add New Driver Question</h2>
+    <form asp-action="AddDriverInductionQuestion">
+     @*    <div class="form-group">
+            <label asp-for="Qnumber"></label>
+            <input asp-for="Qnumber" class="form-control" />
+        </div> *@
+        <div class="form-group">
+            <label asp-for="Question"></label>
+            <input asp-for="Question" class="form-control" />
+        </div>
+       <div class="form-group">
+            <label asp-for="AnswerLabel1"></label>
+            <select asp-for="AnswerLabel1" class="form-control">
+                <option value="True">TRUE</option>
+                <option value="False">FALSE</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="AnswerLabel2"></label>
+            <select asp-for="AnswerLabel2" class="form-control">
+                <option value="True">TRUE</option>
+                <option value="False">FALSE</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="isCorrectAnswer">Select Correct Answer</label>
+            <select asp-for="isCorrectAnswer" class="form-control">
+                <option value="1">TRUE</option>
+                <option value="2">FALSE</option>
+            </select>
+        </div>
+            
+        <div class="form-group">
+            <label asp-for="Category"></label>
+            <select asp-for="Category" class="form-control">
+                <option value="Driver">Driver</option>
+            </select>
+        </div>
+        <!-- Hidden fields to send as null -->
+        <input type="hidden" asp-for="AnswerLabel3" value="NA" />
+        <input type="hidden" asp-for="FilePath" value="" />
+        <input type="hidden" asp-for="FileName" value="" />
+        <input type="hidden" asp-for="IsNotUseFile" value="" />
+        <input type="hidden" asp-for="IsActivated" value="TRUE" />
+        <input type="hidden" asp-for="Qnumber" value="" />
+
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

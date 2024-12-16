@@ -1,0 +1,240 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model MercWebExt.Models.ViewModels.ViewInduction
+
+@{
+    ViewBag.Title = "Visitor Induction";
+    Layout = "_Layout_Public";
+}
+
+<section id="Induction">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2>Coming Soon</h2>
+            </div>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        </div>
+    </div>
+</section>
+
+<!-- Modal for vehicle details -->
+    <div class="modal fade" id="modal-fileview">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="fileTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="fadeTable">
+                   <embed src="" id="filePath" type="application/pdf" width="100%" height="800px" /> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-warning" data-dismiss="modal" OnClick="CheckAnswer('Yes');">
+                    Yes
+                </a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" OnClick="CheckAnswer('No');">
+                    No
+                </button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" OnClick="CheckAnswer('NA');">
+                    N/A
+                </button>
+            </div>
+            
+        </div>
+        <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+<input type="hidden" id="answerId" />
+<script>
+//Modal comments
+$('#modal-fileview').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var filePath = button.data('filepath');
+    var fileName = button.data('filename');
+    var answerNumber = button.data('ansid');
+
+    document.getElementById("fileTitle").innerHTML = fileName;
+    document.getElementById("filePath").src = "../" + filePath;
+    document.getElementById("answerId").value = answerNumber;
+});
+
+$(function () {
+
+    GetUserId();
+
+});
+
+function CheckAnswer(answer)
+{
+    var ansId = document.getElementById("answerId").value + "";
+
+    if (answer == 'Yes')
+    {
+        ansId = "qat_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+    else if (answer == 'No')
+    {
+        ansId = "qaf_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+    else if (answer == 'NA')
+    {
+        ansId = "qan_" + ansId;
+        document.getElementById(ansId).checked = !document.getElementById(ansId).checked;
+    }
+
+};
+
+function GetUserId()
+{
+    $.ajax({
+        type: "GET",
+        url: "http://203.45.127.97:6500/Users/GetUserId",
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json",
+        success: function (response) {
+            document.getElementById('userId').value = response;
+            
+        }
+    });
+};
+
+function addUserByExt()
+{
+    var userId = document.getElementById('userId').value;
+    var userFirst = document.getElementById('FirstName').value;
+    var userLast = document.getElementById('LastName').value;
+    var userPhone = document.getElementById('DriverMobile').value;
+    var userEmail = document.getElementById('DriverEmail').value;
+    var userComp = document.getElementById('Company').value;
+
+    var newUser = {"Name":userFirst,"Lastname":userLast,"Phone":userPhone,"Email":userEmail, "Company":userComp, "UserGroup":4, "Userid":userId};
+
+    $.ajax({
+        type: "POST",
+        url: "http://203.45.127.97:6500/Users/AddUserByExt",
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json",
+        data:newUser
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "http://203.45.127.97:6600/Users/AddUsers?paraString=" + userId + "-" + userFirst + "-" + userLast,
+        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+        dataType: "json"
+    });
+
+};
+
+$('#sendInduction').on('click', function () {
+
+        var lastName = document.getElementById("LastName").value;
+        var firstName = document.getElementById("FirstName").value;
+        var driverEmail = document.getElementById("DriverEmail").value;
+        var driverMobile = document.getElementById("DriverMobile").value;
+        var forkliftNumber = document.getElementById("ForkliftNo").value;
+        var userId = document.getElementById('userId').value + "";
+        var comments = document.getElementById('comments').value;
+        var choices = getChoices();
+
+        var returnData = 
+        {
+            LastName:lastName,
+            FirstName:firstName,
+            DriverEmail:driverEmail,
+            DriverMobile:driverMobile,
+            ForkliftNo: forkliftNumber,
+            Comments: comments,
+            UserId: userId,
+
+            Qr1:choices[0],
+            Qr2:choices[1],
+            Qr3:choices[2],
+            Qr4:choices[3],
+            Qr5:choices[4],
+            Qr6:choices[5],
+            Qr7:choices[6],
+            Qr8:choices[7],
+            Qr9:choices[8],
+            Qr10:choices[9],
+            Qr11:choices[10],
+            Qr12:choices[11],
+            Qr13:choices[12],
+            Qr14:choices[13],
+            Qr15:choices[14],
+            Qr16: choices[15],
+            Qr17: choices[16],
+            Qr18: choices[17],
+            Qr19: choices[18],
+            Fr1: choices[19],
+            Fr2: choices[20],
+            Fr3: choices[21],
+            Fr4: choices[22],
+            Fr5: choices[23],
+            Fr6: choices[24],
+            Fr7: choices[25],
+            Fr8: choices[26],
+            Response1: choices[27],
+            Response2: choices[28]
+
+        };
+
+        console.log(returnData);
+
+});
+    
+function getChoices()
+{
+    var choices = [];
+    for (var i=1; i<20; i++)
+    {   
+        var qName = 'qr_' + i;
+
+        var els = document.getElementsByName(qName);
+        for (var j=0;j<els.length;j++){
+            if ( els[j].checked ) {
+                choices.push(els[j].value);
+            }
+        }
+    }
+
+    for (var k=1; k<9; k++)
+    {   
+        var fName = 'fr_' + k;
+
+        var fels = document.getElementsByName(fName);
+        for (var l=0;l<fels.length;l++){
+            if ( fels[l].checked ) {
+                choices.push("Checked");
+            }
+        }
+    }
+
+    if (document.getElementById("rt_1").checked)
+    {
+        var ansrr1 = "Checked";
+    }
+
+    if (document.getElementById("rt_2").checked)
+    {
+        var ansrr2 = "Checked";
+    }
+
+    choices.push(ansrr1);
+    choices.push(ansrr2);
+
+    console.log(ansrr1 + "&&" + ansrr2);
+
+    return choices;
+};
+
+</script>

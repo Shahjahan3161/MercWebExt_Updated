@@ -1,0 +1,528 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@model MercWebExt.Models.ViewModels.ViewInduction
+
+@{
+    ViewBag.Title = "Induction";
+    Layout = "_Layout_Public";
+}
+
+<section id="Induction">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <h2>DRIVER SAFETY INDUCTION QUESTIONNAIRE</h2>
+                <p>
+                    The following questions have been designed to test your understanding of the distribution centre driver safety induction.<br/>
+                    To complete this form, please fill out your details, select the correct answer and click the <strong>Complete</strong> button.<br/><br/>
+                    <a class="btn btn-default" data-popup-open="popup-1" title="WORK HEALTH AND SAFETY INSTRUCTION">Show Instruction Documents</a>
+                </p>
+            </div>
+        </div>
+        <form>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="5%"></th>
+                                <th width="85%">
+                                    @Html.DisplayNameFor(model => model.InductionQuestions.FirstOrDefault().Question)
+                                </th>
+                                <th width="5%">Answer</th>
+                                <th width="5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.InductionQuestions.ToList())
+                            {
+                                <tr>
+                                    <td class="text-right">
+                                        @Html.DisplayFor(modelItem => item.Qnumber).
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Question)
+                                    </td>
+                                    <td class="checkboxes">
+                                        <input type="radio" id="qat_@item.Qnumber" name="qr_@item.Qnumber" value="@item.AnswerLabel1" data-question-id="@item.Qid" required /><label for="qat_@item.Qnumber">@item.AnswerLabel1<span><span></span></span></label>
+                                    </td>
+                                    <td class="checkboxes">
+                                        <input type="radio" id="qaf_@item.Qnumber" name="qr_@item.Qnumber" value="@item.AnswerLabel2" data-question-id="@item.Qid" /><label for="qaf_@item.Qnumber">@item.AnswerLabel2<span><span></span></span></label>
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-4">
+                        <label>First Name</label>
+                        <div class="form-group">
+                            <input id="FirstName" type="text" class="form-control" placeholder="Your First Name" onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Last Name</label>
+                        <div class="form-group">
+                            <input id="LastName" type="text" class="form-control" placeholder="Your Last Name" onKeyup="this.value=this.value.charAt(0).toUpperCase()+this.value.slice(1);" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Company</label>
+                        <div class="form-group">
+                            <input id="Company" class="form-control" type="text" placeholder="Your Company" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="col-md-4">
+                        <label>Your Email</label>
+                        <div class="form-group">
+                            <input id="DriverEmail" class="form-control" type="email" placeholder="Your Email" value=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Your Mobile Number</label>
+                        <div class="form-group">
+                            <input id="DriverMobile" class="form-control" type="text" placeholder="Numbers Only" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Registration Number</label>
+                        <div class="form-group">
+                            <input id="RegoNumber" class="form-control" type="text" placeholder="The Rego Number of the vehicle" onKeyup="this.value=this.value.toUpperCase();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input type="hidden" id="userId" readonly/>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button class="button green rounded" id="sendInduction">Complete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<div>
+    <form >
+        
+    </form>
+</div>
+
+
+<!-- popup wrapper with blk opaque background -->
+<div class="popup" data-popup="popup-1">
+    <!-- popup inner - where all content goes -->
+    <div class="popup-inner">
+        <embed src="../documents/WHSI0062v5.pdf" type="application/pdf" width="100%" height="700px" />
+        <p><a data-popup-close="popup-1" href="#">Close</a></p>
+        <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
+    </div>
+</div>
+
+
+<script>
+    $('#sendInduction').on('click', function (e) {
+        e.preventDefault();
+        document.getElementById("sendInduction").disabled = true;
+
+        // Validate form fields
+        let isFormValid = ValidateForm();
+        let selectedAnswers = getChoices();
+
+        if (!isFormValid) {
+            alert("Please fill out all required fields.");
+            document.getElementById("sendInduction").disabled = false;
+            return;
+        }
+
+        if (selectedAnswers.length === 0) {
+            alert("Please answer all questions.");
+            document.getElementById("sendInduction").disabled = false;
+            return;
+        }
+
+        // Send the selected answers to the backend for validation
+        $.ajax({
+            type: "POST",
+            url: "/Induction/CheckInductionAnswers", 
+            contentType: "application/json",
+            data: JSON.stringify(selectedAnswers),
+            success: function (response) {
+                if (response.isCorrect) {
+                    alert("All answers are correct. Form will be submitted.");
+
+                    // Prepare and send form data including the selected answers
+                    var returnData = {
+                        Category: "Driver",
+                        LastName: document.getElementById("LastName").value,
+                        FirstName: document.getElementById("FirstName").value,
+                        DriverEmail: document.getElementById("DriverEmail").value,
+                        DriverMobile: document.getElementById("DriverMobile").value,
+                        RegoNumber: document.getElementById("RegoNumber").value,
+                        Company: document.getElementById("Company").value,
+                        SelectedAnswers: selectedAnswers
+                    };
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Induction/CheckInduction", 
+                        data: returnData,
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        success: function () {
+                            alert("Form successfully submitted!");
+                            location.reload();
+                        },
+                        error: function () {
+                            alert("Error submitting the form. Please try again.");
+                            document.getElementById("sendInduction").disabled = false;
+                        }
+                    });
+                } else {
+                    alert("Some answers are incorrect. Please check and try again.");
+                    document.getElementById("sendInduction").disabled = false;
+                }
+            },
+            error: function () {
+                alert("Error validating answers. Please try again.");
+                document.getElementById("sendInduction").disabled = false;
+            }
+        });
+    });
+
+    // Validate the form fields
+    function ValidateForm() {
+        var lastName = document.getElementById("LastName").value;
+        var firstName = document.getElementById("FirstName").value;
+        var driverEmail = document.getElementById("DriverEmail").value;
+
+        if (lastName === "" || firstName === "" || driverEmail === "") {
+            return false;
+        }
+        return true;
+    }
+
+    // Collect the selected answers along with question IDs
+    function getChoices() {
+        var choices = [];
+        $('input[type="radio"]:checked').each(function () {
+            debugger
+            var questionId = $(this).data('question-id'); // Use question ID from the data attribute
+            var selectedAnswer = $(this).val();
+            choices.push({ questionId: questionId, answer: selectedAnswer });
+        });
+        return choices;
+    }
+</script>
+
+@* <script>
+    $('#sendInduction').on('click', function (e) {
+        e.preventDefault();
+        document.getElementById("sendInduction").disabled = true;
+
+        let isFormValid = ValidateForm();
+        let selectedAnswers = getChoices();
+
+        if (!isFormValid) {
+            alert("Please fill out all required fields.");
+            document.getElementById("sendInduction").disabled = false;
+            return;
+        }
+
+        if (selectedAnswers.length === 0) {
+            alert("Please answer all questions.");
+            document.getElementById("sendInduction").disabled = false;
+            return;
+        }
+
+        // Fetch correct answers from the server to validate
+        $.ajax({
+            type: "POST",
+            url: "/Induction/CheckInductionAnswers", // Server endpoint to validate answers
+            contentType: "application/json",
+            data: JSON.stringify(selectedAnswers),
+            success: function (response) {
+                if (response.isCorrect) {
+                    debugger
+                    alert("All answers are correct. Form will be submitted.");
+
+                    var returnData = {
+                        Category: "Driver",
+                        LastName: document.getElementById("LastName").value,
+                        FirstName: document.getElementById("FirstName").value,
+                        DriverEmail: document.getElementById("DriverEmail").value,
+                        DriverMobile: document.getElementById("DriverMobile").value,
+                        RegoNumber: document.getElementById("RegoNumber").value,
+                        Company: document.getElementById('Company').value,
+                        SelectedAnswers: selectedAnswers // Pass the selected answers to the server
+                    };
+
+                    // Submit the form data
+                    $.ajax({
+                        type: "POST",
+                        url: "/Induction/SubmitInduction",
+                        data: returnData,
+                        success: function () {
+                            alert("Form successfully submitted!");
+                            location.reload();
+                        }
+                    });
+                } else {
+                    alert("Some answers are incorrect. Please try again.");
+                    document.getElementById("sendInduction").disabled = false;
+                }
+            },
+            error: function () {
+                alert("Error validating answers. Please try again.");
+                document.getElementById("sendInduction").disabled = false;
+            }
+        });
+    });
+
+    function ValidateForm() {
+        var lastName = document.getElementById("LastName").value;
+        var firstName = document.getElementById("FirstName").value;
+        var driverEmail = document.getElementById("DriverEmail").value;
+
+        if (lastName == "" || firstName == "" || driverEmail == "") {
+            return false;
+        }
+
+        return true;
+    }
+
+    function getChoices() {
+        var choices = [];
+        $('input[type="radio"]:checked').each(function () {
+            var questionId = $(this).attr('name').split('_')[1];
+            var selectedAnswer = $(this).val();
+            choices.push({ questionId: questionId, answer: selectedAnswer });
+        });
+        return choices;
+    }
+
+
+// $(function () {
+
+//     GetUserId();
+
+// });
+
+// function GetUserId()
+// {
+//     $.ajax({
+//         type: "GET",
+//         url: "https://winewood.mercorella.com.au:6550/Users/GetUserId",
+//         contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+//         dataType: "json",
+//         success: function (response) {
+//             document.getElementById('userId').value = response;
+            
+//         }
+//     });
+// };
+
+// function addUserByExt()
+// {
+//     debugger
+//     GetUserId();
+//     var userId = document.getElementById('userId').value;
+//     var userFirst = document.getElementById('FirstName').value;
+//     var userLast = document.getElementById('LastName').value;
+//     var userPhone = document.getElementById('DriverMobile').value;
+//     var userEmail = document.getElementById('DriverEmail').value;
+//     var userComp = document.getElementById('Company').value;
+
+//     var newUser = {"Name":userFirst,"Lastname":userLast,"Phone":userPhone,"Email":userEmail, "Company":userComp, "UserGroup":3, "Userid":userId};
+
+//     $.ajax({
+//         type: "POST",
+//         url: "https://winewood.mercorella.com.au:6550/Users/AddUserByExt",
+//         contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+//         dataType: "json",
+//         data:newUser
+//     });
+
+
+//     $.ajax({
+//         type: "GET",
+//         url: "https://winewood.mercorella.com.au:6680/Users/AddUsers?paraString=" + userId + "-" + userFirst + "-" + userLast,
+//         contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+//         dataType: "json"
+//     });
+
+// };
+
+//     $('#sendInduction').on('click', function () {
+//         document.getElementById("sendInduction").disabled = true;
+
+//         let isCorrect = ValidateQuestion();
+//         let isValid = ValidateForm();
+
+//         console.log(isCorrect + ", " + isValid);
+
+//         // When all answers are correct and form is valid
+//         if (isCorrect && isValid) {
+//             var lastName = document.getElementById("LastName").value;
+//             var firstName = document.getElementById("FirstName").value;
+//             var driverEmail = document.getElementById("DriverEmail").value;
+//             var driverMobile = document.getElementById("DriverMobile").value;
+//             var regoNumber = document.getElementById("RegoNumber").value;
+//             var company = document.getElementById('Company').value;
+//             var choices = getChoices();
+
+//             var returnData = {
+//                 Category: "Driver",
+//                 LastName: lastName,
+//                 FirstName: firstName,
+//                 DriverEmail: driverEmail,
+//                 DriverMobile: driverMobile,
+//                 RegoNumber: regoNumber,
+//                 Company: company,
+
+//                 qr_1: choices[0],
+//                 qr_2: choices[1],
+//                 qr_3: choices[2],
+//                 qr_4: choices[3],
+//                 qr_5: choices[4],
+//                 qr_6: choices[5],
+//                 qr_7: choices[6],
+//                 qr_8: choices[7],
+//                 qr_9: choices[8],
+//                 qr_10: choices[9],
+//                 qr_11: choices[10],
+//                 qr_12: choices[11],
+//                 qr_13: choices[12],
+//                 qr_14: choices[13],
+//                 qr_15: choices[14],
+//                 qr_16: choices[15]
+//             };
+
+//             console.log(returnData);
+
+//             swal({
+//                 title: "Correct Answers!",
+//                 text: "You have answered all the questions correctly.\nYou have successfully completed the induction.",
+//                 icon: "success",
+//             });
+
+//             $.ajax({
+//                 type: "POST",
+//                 url: "/Induction/CheckInduction",
+//                 data: returnData,
+//                 contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+//                 dataType: 'json',
+//                 success: function (response) {
+//                     if (response == "Okay") {
+//                         swal({
+//                             title: "Good job!",
+//                             text: "An email have been sent to " + driverEmail +
+//                                 "\n Please bring this email and QR pass with you when you are onsite. Thank you",
+//                             icon: "success",
+//                         }).then((value) => { location.reload(true); });
+//                     }
+//                 }
+//             });
+//         } else {
+//             if (!isCorrect) {
+//                 swal({
+//                     title: "Invalid Answers",
+//                     text: "You have not answered all the questions correctly.\nPlease check all your answers and try again.",
+//                     icon: "error",
+//                 });
+//             } else if (!isValid) {
+//                 swal({
+//                     title: "Invalid Details",
+//                     text: "You have entered invalid Personal Details.\nPlease check your name and email address again.",
+//                     icon: "error",
+//                 });
+//             }
+//         }
+//     });
+
+// function ValidateForm()
+// {
+//     var returnVal = true;
+    
+//     //Check Personal Details
+//     if( (document.getElementById("LastName").value == "") ||
+//         (document.getElementById("FirstName").value == "") ||
+//         (document.getElementById("DriverEmail").value == "") )
+//     {
+//         document.getElementById("LastName").focus();
+//         returnVal = false;
+//         document.getElementById("sendInduction").disabled = returnVal;
+//     }
+//     else
+//     {
+
+//     }
+
+//     return returnVal;
+        
+// };
+
+// function ValidateQuestion()
+// {
+//     debugger
+//     var choices = getChoices();
+
+//     console.log(choices);
+
+//     // var answers = 
+//     //     ["TRUE", "FALSE", "TRUE", "TRUE", "TRUE",
+//     //      "TRUE", "FALSE", "TRUE", "FALSE", "FALSE",
+//     //      "TRUE", "FALSE", "TRUE", "TRUE", "FALSE", "TRUE"];
+
+//         var answers =
+//             ["TRUE", "TRUE", "TRUE", "TRUE", "TRUE",
+//              "TRUE", "TRUE", "TRUE", "TRUE", "TRUE",
+//              "TRUE", "TRUE", "TRUE", "TRUE", "TRUE", "TRUE"];
+//     var isCorrect = true;
+
+//     // Get Answers and Check the answer is correct
+//     for (var i=1; i<17; i++)
+//     {   
+//         if((choices[i-1] == answers[i-1]) && isCorrect)
+//         {
+//             isCorrect = true;   
+//         }
+//         else
+//         {
+//             isCorrect = false;
+//             console.log("Wrong : No." + i);
+//             document.getElementById("sendInduction").disabled = isCorrect;
+//         }
+//     }
+//     return isCorrect;
+        
+// };
+
+// function getChoices()
+// {
+//     var choices = [];
+//     for (var i=1; i<17; i++)
+//     {   
+//         var qName = 'qr_' + i;
+
+//         var els = document.getElementsByName(qName);
+//         for (var j=0;j<els.length;j++){
+//             if ( els[j].checked ) {
+//                 choices.push(els[j].value);
+//             }
+//         }
+//     }
+
+//     return choices;
+// };
+</script> *@

@@ -1,0 +1,177 @@
+﻿@model MercWebExt.Models.ViewModels.ViewReportInduction
+
+@{
+    ViewBag.Title = "Report Induction List";
+    Layout = "_Layout_Internal";
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Induction Update
+    </h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Induction Update</h3>
+                    
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                title="Collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="dataTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Certification #</th>
+                                <th>Name</th>
+                                <th>Company</th>
+                                <th>Email</th>
+                                <th>Issue Date</th>
+                                <th>Mobile</th>
+                                <th>REG #</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.driverList.OrderByDescending(o=>o.DateCreated.Date).ToList())
+                            {
+                                <tr class="text-content">
+                                    <td>
+                                        @item.Iid.ToString()
+                                    </td>
+                                    <td>
+                                        @item.LastName.ToString() @item.FirstName.ToString()
+                                    </td>
+                                    <td>
+                                        @if(string.IsNullOrEmpty(item.Company))
+                                        {
+                                            <a class="btn" OnClick="update('@item.Iid','@item.FirstName','@item.LastName')">Update</a>
+                                        }
+                                        else
+                                        {
+                                            @item.Company
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.DriverEmail.ToString()
+                                    </td>
+                                    <td>
+                                        @item.DateCreated.ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.DriverMobile))
+                                        {
+                                            @item.DriverMobile.ToString()
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.RegoNumber))
+                                        {
+                                            @item.RegoNumber.ToString()
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+</section>
+<!-- /.content -->
+<!-- page script -->
+<!-- bootstrap datepicker -->
+<script src="~/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<!-- Data Table -->
+<script src="~/js/buttons.html5.js"></script>
+<script src="~/js/dataTables.buttons.js"></script>
+<script src="~/js/jszip.js"></script>
+<script src="~/js/pdfmake.min.js"></script>
+<script src="~/js/vfs_fonts.js"></script>
+<script src="~/js/moment.min.js"></script>
+<script src="~/js/datetime-moment.js"></script>
+
+<script>
+    //DataTable Configuration
+    $(document).ready(function () {
+        $.fn.dataTable.moment('DD/MM/YY');
+    
+        var table = $('#dataTable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excelHtml5',
+                'pdfHtml5'
+            ],
+            'orderCellsTop': true,
+            'fixedHeader': true,
+            'paging': true,
+            'lengthChange': true,
+            'pageLength': 200,
+            'searching': true,
+            'ordering': true,
+            'info': false,
+            'autoWidth': false
+        });
+
+    });
+
+    //Date picker
+    $('#datePicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'dd/mm/yyyy'
+    });
+
+    function sendForm(date) {
+        //MM dd yyyy
+        var newDate = new Date(date.split('/')[1] + " " + date.split('/')[0] + " " + date.split('/')[2]);
+        document.getElementById("dateSel").value = newDate.toDateString();
+        document.getElementById("selectDateForm").submit();
+    };
+
+    function update(userId, firstName, lastName)
+    {
+        var newUser = {"Name":firstName,"Lastname":lastName };
+
+        $.ajax({
+            type: "POST",
+            url: "https://winewood.mercorella.com.au:6550/Users/GetExtUserUpdate",
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+            dataType: "json",
+            data: newUser,
+            success: function (response) {
+
+                console.log(response);
+
+                if (response != "Not Found")
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Induction/UpdateInduction?paraString=" + userId + "_" + response,
+                        contentType: 'application/x-www-form-urlencoded; charset=utf-8;',
+                        dataType: "json"
+                    });
+                }
+            }
+
+        });
+    }
+</script>
