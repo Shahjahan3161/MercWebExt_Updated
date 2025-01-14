@@ -1,4 +1,61 @@
-﻿@model IEnumerable<MercWebExt.Models.DataBase.Settings>
+﻿@model IEnumerable<MercWebExt.Models.DataBase.Categories3>
+
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "_Layout";
+}
+<div class="container">
+    <h1>Categories</h1>
+
+    <p>
+        <a asp-action="Create" class="btn btn-success">Create New</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    Image
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        <img src="@item.ImagePath" alt="@item.CategoryName" width="100" height="100" />
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@* @model IEnumerable<MercWebExt.Models.DataBase.Settings>
 
 @{
     ViewData["Title"] = "Settings";
@@ -69,3 +126,4 @@
         </tbody>
     </table>
 </div>
+ *@

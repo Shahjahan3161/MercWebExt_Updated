@@ -25,24 +25,24 @@ namespace MercWebExt.Controllers
 
         public IActionResult Index()
         {
-   //         var categories = _context.Categories.ToList(); 
-   //         var categories2 = _context.Categories2.ToList(); 
-   //         var categories3 = _context.Categories3.ToList(); 
-			//var aboutus = _context.AboutUs.FirstOrDefault(); 
-			//var certified = _context.Certifieds.FirstOrDefault(); 
-   //         var settings = _context.Settings.FirstOrDefault();
-   //         var refrigerated = _context.Refrigerated.FirstOrDefault();
-   //         ViewBag.Categories = categories;
-   //         ViewBag.Categories2 = categories2;
-   //         ViewBag.Categories3 = categories3;
-   //         ViewBag.AboutUs = aboutus;
-   //         ViewBag.Certifieds = certified;
-   //         ViewBag.Settings = settings;
-   //         ViewBag.Refrigerated = refrigerated;
-            // if (HttpContext.User.Identity.IsAuthenticated)
-            //{
-            //_logger.LogInformation("Log in by " + HttpContext.User.Identity.Name);
-            //}
+            var categories = _context.Categories.ToList();
+            var categories2 = _context.Categories2.ToList();
+            var categories3 = _context.Categories3.ToList();
+            var aboutus = _context.AboutUs.FirstOrDefault();
+            var certified = _context.Certifieds.FirstOrDefault();
+            var settings = _context.Settings.FirstOrDefault();
+            var refrigerated = _context.Refrigerated.FirstOrDefault();
+            ViewBag.Categories = categories;
+            ViewBag.Categories2 = categories2;
+            ViewBag.Categories3 = categories3;
+            ViewBag.AboutUs = aboutus;
+            ViewBag.Certifieds = certified;
+            ViewBag.Settings = settings;
+            ViewBag.Refrigerated = refrigerated;
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                _logger.LogInformation("Log in by " + HttpContext.User.Identity.Name);
+            }
             return View();
         }
 

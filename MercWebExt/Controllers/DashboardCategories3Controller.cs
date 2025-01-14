@@ -22,7 +22,8 @@ namespace MercWebExt.Controllers
 		// GET: DashboardCategories
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Categories3.ToListAsync());
+			var result = await _context.Categories3.ToListAsync();
+			return View(result);
 		}
 
 		// GET: DashboardCategories/Create
